@@ -1,0 +1,103 @@
+<ui:composition  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                 xmlns:h="http://xmlns.jcp.org/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:p="http://primefaces.org/ui"
+                 template="WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="formTable">
+            <p:dataTable value="#{actionsAjax.allCustomers}" var="tempCustomer" border="1" rows="5" paginator="true">
+                <f:facet name="header">
+                    Kundentabelle
+                </f:facet>
+                <f:facet name="footer">
+                    Kundenzahl: #{actionsAjax.allCustomers.size()}
+                </f:facet>
+                <p:column>
+                    <f:facet name="header">Selektieren</f:facet>
+                    <p:selectBooleanCheckbox value="#{actions.customersToDelete[tempCustomer.id]}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">Id</f:facet>
+                    #{tempCustomer.id}
+                </p:column>
+                <p:column>
+                    <f:facet name="header">Nachname</f:facet>
+                    #{tempCustomer.lastName}
+                </p:column>
+                <p:column>
+                    <f:facet name="header">Vorname</f:facet>
+                    #{tempCustomer.firstName}
+                </p:column>
+                <p:column>
+                    <f:facet name="header">Geburtsdatum</f:facet>
+
+                    <h:outputText value="#{tempCustomer.dateOfBirth}">
+                        <f:convertDateTime locale="de" dateStyle="full"/>
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">Kreditkarte</f:facet>
+
+                    <h:outputText value="#{tempCustomer.crediCardProvider.productName}">
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <p:commandButton value="Löschen" action="#{actionsAjax.deleteCustomer}" ajax="false">
+                      <f:setPropertyActionListener value="#{tempCustomer}" target="#{actionsAjax.customer}"/>
+                    </p:commandButton>
+                    <p:commandButton value="Editieren" action="customer-edit.xhtml" ajax="false">
+                        <f:setPropertyActionListener value="#{tempCustomer}" target="#{actionsAjax.customer}"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <h:commandButton value="Selektierte löschen" action="#{actions.deleteSelectedCustomers}">
+
+            </h:commandButton>
+        </h:form>
+
+        <h:form id="formInput">
+            <p:growl id="growl" showDetail="true" showSummary="true">
+                <p:autoUpdate/>
+            </p:growl>
+            <p:outputLabel id="labelFirstName" for="firstName " value="Vorname eigeben:"/>
+
+            <p:inputText id="firstName" value="#{actionsAjax.customer.firstName}">
+                <f:ajax event="blur" execute="firstName" render="messagesForFirstName firstName labelFirstName"/>
+
+            </p:inputText>
+
+            <p:message id="messagesForFirstName" for="firstName"/>
+            <br/>
+            <p:outputLabel value="Nachname:"/>
+            <p:inputText id="lastName" value="#{actionsAjax.customer.lastName}"/>
+            <p:message for="lastName"/>
+            <br/>
+            <p:outputLabel value="Geburtsdatum eingeben:"/>
+            <p:inputText id="dob" value="#{actionsAjax.customer.dateOfBirth}">
+                <f:convertDateTime pattern="dd.MM.yyyy"/>
+            </p:inputText>
+            <p:message for="dob"/>
+            <br/>
+            <p:outputLabel value="Zahlungsmittel aussuchen" />
+            <p:selectOneListbox value="#{actionsAjax.customer.crediCardProvider}" converter="#{creditCardProviderConverter}">
+                <f:selectItems
+                        value="#{actions.allCreditCardProviders}"
+                        var="tempProvider"
+                        itemLabel="#{tempProvider.productName}"
+
+                />
+            </p:selectOneListbox>
+            <br/>
+            <p:commandButton
+                    value="Kunde speichern"
+                    action="#{actionsAjax.saveCustomer}" update=":formTable"/>
+
+
+        </h:form>
+        <h:messages />
+
+    </ui:define>
+
+
+</ui:composition>

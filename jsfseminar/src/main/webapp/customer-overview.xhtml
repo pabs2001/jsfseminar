@@ -1,0 +1,60 @@
+<ui:composition  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                 xmlns:h="http://xmlns.jcp.org/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 template="WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <h:dataTable value="#{actions.allCustomers}" var="tempCustomer" border="1" rows="10">
+                <f:facet name="header">
+                    Kundentabelle
+                </f:facet>
+                <f:facet name="footer">
+                    Kundenzahl: #{actions.allCustomers.size()}
+                </f:facet>
+                <h:column>
+                    <f:facet name="header">Selektieren</f:facet>
+                    <h:selectBooleanCheckbox value="#{actions.customersToDelete[tempCustomer.id]}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Id</f:facet>
+                    #{tempCustomer.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Nachname</f:facet>
+                    #{tempCustomer.lastName}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Vorname</f:facet>
+                    #{tempCustomer.firstName}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Geburtsdatum</f:facet>
+
+                    <h:outputText value="#{tempCustomer.dateOfBirth}">
+                        <f:convertDateTime locale="de" dateStyle="full"/>
+                    </h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Kreditkarte</f:facet>
+
+                    <h:outputText value="#{tempCustomer.crediCardProvider.productName}">
+                    </h:outputText>
+                </h:column>
+                <h:column>
+                    <h:commandButton value="Löschen" action="#{actions.deleteCustomer}">
+                      <f:setPropertyActionListener value="#{tempCustomer}" target="#{actions.customer}"/>
+                    </h:commandButton>
+                    <h:commandButton value="Editieren" action="customer-edit.xhtml">
+                        <f:setPropertyActionListener value="#{tempCustomer}" target="#{actions.customer}"/>
+                    </h:commandButton>
+                </h:column>
+            </h:dataTable>
+            <h:commandButton value="Selektierte löschen" action="#{actions.deleteSelectedCustomers}">
+
+            </h:commandButton>
+        </h:form>
+        <h:messages />
+
+    </ui:define>
+</ui:composition>

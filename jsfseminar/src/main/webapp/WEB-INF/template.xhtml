@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:m="http://java.sun.com/jsf/composite/date"
+      xmlns:c="http://java.sun.com/jsf/composite"
+>
+
+<h:head>
+    <h:outputStylesheet library="css" name="styles.css"/>
+</h:head>
+
+<h:body>
+    <div id="header">
+        <h2>
+            <ui:insert name="headerText">
+                Kundenanwendung
+            </ui:insert>
+        </h2>
+    </div>
+
+    <div id="menu">
+        <h:form id="menuForm">
+            <h:link outcome="/customer-input.xhtml" value="Eingabeseite "/>
+            <h:link outcome="/wizard/customer-input-step1.xhtml" value="Eingabeseite Assistent "/>
+            <h:link outcome="/customer-overview.xhtml" value="Übersichtsete "/>
+            <h:link outcome="/customer-overview-pf.xhtml" value="Übersichtsete PF"/>
+
+            <h:selectBooleanCheckbox value="#{viewBean.showHelp}">
+                <f:ajax event="change" execute="@this" render=":panelGroupContainer"/>
+            </h:selectBooleanCheckbox>
+        </h:form>
+
+
+        <h:link outcome="/customer-help.xhtml" value="Hilfe"/>
+
+         <ui:remove>
+                <h:form>
+                    <h:commandButton value="Übersichtseite" action="#{actions.actionMethod}"/>
+                    <h:commandButton value="Übersichtseite" action="customer-overview.xhtml"/>
+                     <h:commandLink value="Übersichtseite" action="#{actions.actionMethod}"/>
+                    <h:commandLink value="Übersichtseite" action="customer-overview.xhtml"/>
+                </h:form>
+         </ui:remove>
+
+
+    </div>
+
+    <div id="help">
+        <h:panelGroup id="panelGroupContainer" layout="block">
+        <h:panelGroup id="panelHelp" layout="block" rendered="#{viewBean.showHelp}">
+            HILFE TEXT!!!!
+        </h:panelGroup>
+    </h:panelGroup>
+
+    </div>
+
+    <div id="content">
+        <ui:insert name="content" />
+
+    </div>
+
+    <div id="footer">
+        (c) 2021 GFÜ
+        <m:serverDate style="color:green">
+            <f:convertDateTime locale="de" dateStyle="medium" for="dateValueHolder"/>
+            <f:facet name="labelFacet">
+                <h:outputText value="Page generated at " style="color: yellow"/>
+            </f:facet>
+        </m:serverDate>
+    </div>
+    <!--
+        <h:panelGroup layout="block" id="header">
+        </h:panelGroup>
+        -->
+</h:body>
+</html>

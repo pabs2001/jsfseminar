@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsf/composite">
+
+    <c:interface>
+        <c:attribute name="buttonLabel" required="true"/>
+        <c:attribute name="buttonAction" required="true" method-signature="String action()"/>
+    </c:interface>
+
+    <c:implementation>
+        <h:form>
+            <h:inputHidden value="#{actions.customer.id}"/>
+
+            <h:outputLabel value="Vorname:"/>
+
+            <h:inputText id="firstName" value="#{actions.customer.firstName}">
+                <f:ajax event="blur" execute="firstName" render="messagesForFirstName"/>
+            </h:inputText>
+
+            <h:message id="messagesForFirstName" for="firstName"/>
+            <br/>
+            <h:outputLabel value="Nachname:"/>
+            <h:inputText id="lastName" value="#{actions.customer.lastName}"/>
+            <h:message for="lastName"/>
+            <br/>
+            <h:outputLabel value="Geburtsdatum eingeben:"/>
+            <h:inputText id="dob" value="#{actions.customer.dateOfBirth}">
+                <f:convertDateTime pattern="dd.MM.yyyy"/>
+            </h:inputText>
+            <h:message for="dob"/>
+            <br/>
+            <h:outputLabel value="Zahlungsmittel aussuchen" />
+            <h:selectOneListbox value="#{actions.customer.crediCardProvider}" converter="#{creditCardProviderConverter}">
+                <f:selectItems
+                        value="#{actions.allCreditCardProviders}"
+                        var="tempProvider"
+                        itemLabel="#{tempProvider.productName}"
+
+                />
+            </h:selectOneListbox>
+            <br/>
+            <h:commandButton
+                    value="#{cc.attrs.buttonLabel}"
+                    label="#{cc.attrs.buttonLabel}"
+                    action="#{cc.attrs.buttonAction}"/>
+
+
+        </h:form>
+
+    </c:implementation>
+
+</html>

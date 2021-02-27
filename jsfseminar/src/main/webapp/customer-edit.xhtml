@@ -1,0 +1,10 @@
+<ui:composition  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                 xmlns:h="http://xmlns.jcp.org/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:m="http://java.sun.com/jsf/composite/forms"
+                 template="WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <m:inputForm buttonLabel="Kunde ändern" buttonAction="#{actions.editCustomer}"/>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,29 @@
+<ui:composition  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                 xmlns:h="http://xmlns.jcp.org/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 template="../WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <h:form>
+
+            <h:outputLabel value="Geburtsdatum eingeben:"/>
+            <h:inputText id="dob" value="#{actions.customer.dateOfBirth}">
+                <f:convertDateTime pattern="dd.MM.yyyy"/>
+
+            </h:inputText>
+            <h:message for="dob"/>
+            <br/>
+            <h:button value="&lt; zurück" outcome="customer-input-step1.xhtml">
+                <f:param name="cid" value="#{javax.enterprise.context.conversation.id}"/>
+            </h:button>
+            <h:commandButton
+                    actionListener="#{actions.endConversation}"
+                    value="Speichern"
+                    label="Kunde speichern" action="#{actions.saveCustomer}"/>
+
+
+        </h:form>
+        <h:messages />
+
+    </ui:define>
+</ui:composition>
