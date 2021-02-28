@@ -1,0 +1,1 @@
+http://localhost:8080/jsfseminar-1.0-SNAPSHOT/customer-overview.faces
